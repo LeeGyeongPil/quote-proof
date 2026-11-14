@@ -163,3 +163,25 @@ def test_split_ellipsis_variants():
 @pytest.mark.parametrize("text", ["", "   ", "\n"])
 def test_normalize_handles_blank_text(text):
     assert normalize(text).trim()[0] == normalize(text).trim()[1]
+
+
+# ---------- symbol tokens (&, &amp;) between words never shift the approximate range ----------
+
+def test_symbol_in_source_does_not_pull_in_the_next_word():
+    s = src("Backups run daily & logs rotate weekly on the main server.\n")
+    match, _ = find_approximate("Backups run daily and logs rotate weekly", s, 0.8)
+    assert match.text == "Backups run daily & logs rotate weekly"
+    assert match.changed_units == 1
+
+
+def test_html_entity_in_source_does_not_pull_in_the_next_word():
+    s = src("The quick brown fox & the lazy dog jumped over the fence.\n")
+    match, _ = find_approximate("The quick brown fox and the lazy dog jumped", s, 0.8)
+    assert match.text == "The quick brown fox & the lazy dog jumped"
+    assert match.changed_units == 1
+
+
+def test_symbol_in_quote_keeps_the_last_source_word():
+    s = src("Backups run daily and logs rotate weekly on the main server.\n")
+    match, _ = find_approximate("Backups run daily & logs rotate weekly", s, 0.8)
+    assert match.text == "Backups run daily and logs rotate weekly"
