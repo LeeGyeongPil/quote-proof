@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.3] - 2026-11-14
+
+### Fixed
+
+- Approximate matches no longer shift by one word when the source has a symbol token (`&`, HTML `&amp;`) in the
+  middle of the quoted range where the quote has a word, or the other way round. The suggested passage, the corrected
+  copy from `verify --fix`, `found.text`, `suggestion.replace_quote` and `changed_units` now cover the quoted range
+  (no extra trailing word, no missing last word, one changed word instead of two) for these cases. English and Korean
+  output show the same values.
+
+### Known issues
+
+- When a symbol word (`&`, `&amp;`) is the last word of the quote, the suggestion can still take the next source word
+  along with it.
+- Rare cases where the same word repeats right at the edge of the quoted range can still be off by one word.
+
 ## [0.1.2] - 2026-11-14
 
 ### Added
