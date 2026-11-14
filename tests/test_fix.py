@@ -209,3 +209,20 @@ def test_fix_warns_when_it_overwrites_an_existing_copy(cli, sample):
     assert "overwriting the existing copy" in second.err and "report.fixed.md" in second.err
     ko = cli("verify", str(report), "--root", str(sample), "--fix", "--lang", "ko")
     assert "기존 사본을 덮어씁니다" in ko.err
+
+
+def test_symbol_word_fix_copy_holds_exactly_the_quoted_range_in_both_languages(cli, tree, tmp_path):
+    root = tree({"src.md": "Backups run daily & logs rotate weekly on the main server.\n",
+                 "r.md": '# R\n\nIt says "Backups run daily and logs rotate weekly" (src.md:1)\n'}, folder=".")
+    out = tmp_path / "r.fixed.md"
+    for lang, note in (("en", "1 word(s) changed"), ("ko", "단어 1개 다름")):
+        res = cli("verify", str(root / "r.md"), "--root", str(root), "--write", str(out), "--lang", lang)
+        assert note in res.out
+        copy = out.read_text(encoding="utf-8")
+        assert '"Backups run daily & logs rotate weekly" (src.md:1)' in copy
+        assert "weekly on" not in copy
+        out.unlink()
+    html = tree({"s.html": "<p>The quick brown fox &amp; the lazy dog jumped over the fence.</p>\n",
+                 "r.md": '# R\n\n"The quick brown fox and the lazy dog jumped" (s.html:1)\n'}, folder=".")
+    data = cli("suggest", str(html / "r.md"), "--root", str(html), "--json").json()
+    assert data["items"][0]["suggestion"]["replace_quote"] == "The quick brown fox & the lazy dog jumped"
