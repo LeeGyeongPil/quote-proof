@@ -345,17 +345,17 @@ exit code: 3
 ## Verified behavior
 
 <!-- skill-eval:start -->
-Measured with the bundled evaluation set (`evals/`), Claude Code 2.1.322, model `sonnet`, 3 runs per case:
-
 | Check | Result |
 |---|---|
-| Starts on matching requests | 12/12 |
-| Stays quiet on near-miss requests | 0/10 false triggers |
-| Task cases passed with the skill | 7/7 |
-| Task cases passed without the skill | 0/7 |
-| Mean score gain from the skill | 0.667 |
-| Mutation check (broken script versions caught) | 7/7 |
-| Same task cases in Codex (codex-cli 0.154.0) | 14/14 runs passed |
+| Triggers when it should | 12/12 |
+| Stays quiet when it should not | 10/10 |
+| Tasks solved with the skill | 7/7 |
+| Tasks solved without it (baseline) | 0/7 |
+| Mean score gain (Δ) | +0.67 |
+| Tasks that catch a broken script | 7/7 |
+| Codex CLI | 7/7 tasks · verified |
+
+Measured 2026-11-14 with Claude Code 2.1.322 · sonnet · 3 runs per case · codex-cli 0.154.0
 <!-- skill-eval:end -->
 
 ## How it works
