@@ -218,12 +218,27 @@ def find_approximate(quote: str, src: SourceText, min_ratio: float, full_scan: b
         return None, round(ratio, 3)
     units, pos = _units(src, key, char_mode)
     w = len(q_units)
-    window = units[start:start + w]
+    # A slightly longer window lets symbol tokens (the source's "&") sit between matched words
+    # without pushing the end of the range past what the quote says.
+    window = units[start:start + w + 2]
     sm = SequenceMatcher(None, q_units, window, autojunk=False)
-    changed = sum(max(i2 - i1, j2 - j1) for op, i1, i2, j1, j2 in sm.get_opcodes() if op != "equal")
+    ops = [list(op) for op in sm.get_opcodes()]
+    while ops and ops[-1][0] == "insert":
+        ops.pop()
+    while ops and ops[0][0] == "insert":
+        ops.pop(0)
+    if ops and ops[-1][0] == "replace":  # never grow the range beyond the quote's own length
+        ops[-1][4] = min(ops[-1][4], ops[-1][3] + ops[-1][2] - ops[-1][1])
+    if ops and ops[0][0] == "replace":
+        ops[0][3] = max(ops[0][3], ops[0][4] - (ops[0][2] - ops[0][1]))
+    spans = [op for op in ops if op[4] > op[3]]
+    if not spans:
+        return None, round(ratio, 3)
+    changed = sum(max(i2 - i1, j2 - j1) for op, i1, i2, j1, j2 in ops if op != "equal")
+    first, last = start + spans[0][3], start + spans[-1][4] - 1
     sn = src.variant(*key)
-    s0, _ = sn.span(pos[start][0], pos[start][0] + 1)
-    _, e1 = sn.span(pos[start + len(window) - 1][1] - 1, pos[start + len(window) - 1][1])
+    s0, _ = sn.span(pos[first][0], pos[first][0] + 1)
+    _, e1 = sn.span(pos[last][1] - 1, pos[last][1])
     if char_mode and changed == 0:
         return _make(src, s0, e1, "normalized", step_names(CJK_SPACING), 1.0, 0), 1.0
     unit = "char" if char_mode else "word"
