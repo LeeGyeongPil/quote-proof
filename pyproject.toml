@@ -1,0 +1,14 @@
+[project]
+name = "quote-proof-skill-dev"
+version = "0.1.2"
+description = "Development environment (tests) for the quote-proof agent skill. The skill itself needs only Python 3.10+."
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=9.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["skills/quote-proof/scripts"]

@@ -1,0 +1,3 @@
+# Sample and fixture files hold exact text (line breaks, hyphenation, form feeds): git must never touch them.
+sample/** -text
+evals/fixtures/** -text

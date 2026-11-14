@@ -1,0 +1,12 @@
+{
+  "name": "quote-proof-skill",
+  "owner": {"name": "LeeGyeongPil"},
+  "description": "Agent skill that verifies the quotes and source anchors of a report against local source files.",
+  "plugins": [
+    {
+      "name": "quote-proof",
+      "source": "./",
+      "description": "Labels each quote exact, normalized, approximate, not_found or source_missing, flags wrong_line and wrong_file anchors and suggests the exact source text."
+    }
+  ]
+}

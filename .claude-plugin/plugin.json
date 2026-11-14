@@ -1,0 +1,9 @@
+{
+  "name": "quote-proof",
+  "version": "0.1.2",
+  "description": "Checks that quoted passages and path:line, footnote and #L citations in a Markdown report really match the local source files: exact, normalized, approximate, not found, wrong line or wrong file, with fix suggestions.",
+  "author": {"name": "LeeGyeongPil"},
+  "license": "MIT",
+  "homepage": "https://github.com/LeeGyeongPil/quote-proof",
+  "repository": "https://github.com/LeeGyeongPil/quote-proof"
+}
