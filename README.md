@@ -353,9 +353,9 @@ exit code: 3
 | Tasks solved without it (baseline) | 0/7 |
 | Mean score gain (Δ) | +0.67 |
 | Tasks that catch a broken script | 7/7 |
-| Codex CLI | 7/7 tasks · verified |
+| Codex CLI | not verified |
 
-Measured 2026-11-14 with Claude Code 2.1.322 · sonnet · 3 runs per case · codex-cli 0.154.0
+Measured 2026-11-24 with Claude Code 2.1.322 · sonnet · 3 runs per case · codex-cli 0.154.0
 <!-- skill-eval:end -->
 
 ## How it works

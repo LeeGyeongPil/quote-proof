@@ -353,9 +353,9 @@ exit code: 3
 | 스킬 없이 푼 작업(기준선) | 0/7 |
 | 평균 점수 차이(Δ) | +0.67 |
 | 가짜 스크립트를 잡아낸 비율 | 7/7 |
-| Codex CLI | 작업 7/7 통과 · 확인됨 |
+| Codex CLI | 미검증 |
 
-Claude Code 2.1.322 · sonnet · 케이스마다 3회 · 2026-11-14 측정 · codex-cli 0.154.0
+Claude Code 2.1.322 · sonnet · 케이스마다 3회 · 2026-11-24 측정 · codex-cli 0.154.0
 <!-- skill-eval:end -->
 
 ## 동작 원리
