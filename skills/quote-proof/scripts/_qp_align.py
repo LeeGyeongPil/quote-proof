@@ -238,7 +238,14 @@ def find_approximate(quote: str, src: SourceText, min_ratio: float, full_scan: b
     first, last = start + spans[0][3], start + spans[-1][4] - 1
     sn = src.variant(*key)
     s0, _ = sn.span(pos[first][0], pos[first][0] + 1)
-    _, e1 = sn.span(pos[last][1] - 1, pos[last][1])
+    end = pos[last][1]
+    if not char_mode and spans[-1][2] == len(q_units):
+        # The quote ends in punctuation right after its last word ("upgrade."): keep it in the range
+        # when the source has the very same punctuation there; never invent or append any.
+        tail = qtext[list(_WORD_RE.finditer(qtext))[-1].end():]
+        if tail and not any(c.isspace() for c in tail) and sn.text.startswith(tail, end):
+            end += len(tail)
+    _, e1 = sn.span(end - 1, end)
     if char_mode and changed == 0:
         return _make(src, s0, e1, "normalized", step_names(CJK_SPACING), 1.0, 0), 1.0
     unit = "char" if char_mode else "word"
