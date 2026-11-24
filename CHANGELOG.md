@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+## [0.1.4] - 2026-11-24
+
+### Fixed
+
+- Suggestions and corrected copies for approximate quotes keep the closing punctuation (for example the final period)
+  when both the quote and the source have it right after the last word.
+
 ## [0.1.3] - 2026-11-14
 
 ### Fixed

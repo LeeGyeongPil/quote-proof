@@ -33,7 +33,7 @@ from _qp_sources import MAX_DISCOVERED_FILES, MAX_SOURCE_BYTES, SKIP_DIRS, Sourc
 from _qp_verify import (Result, anchor_text, apply_fixes, claim_text, exit_code, summarize, summary_line,  # noqa: E402
                         verify_all)
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 EXIT_USAGE = 3
 DEFAULT_MIN_RATIO = 0.8
 REPORT_SUFFIXES = (".md", ".markdown")

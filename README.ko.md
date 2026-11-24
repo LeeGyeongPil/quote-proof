@@ -278,7 +278,7 @@ python3 skills/quote-proof/scripts/quote_proof.py verify sample/report.md --root
 ```json
 {
   "tool": "quote-proof",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "report": "sample/report.md",
   "root": "sample",
   "summary": {
