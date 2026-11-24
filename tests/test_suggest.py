@@ -115,3 +115,29 @@ def test_write_refusal_uses_the_same_path_rule(cli, sample):
                      str(sample) + "//report.md"):
         res = cli("suggest", str(report), "--root", str(sample), "--write", spelling)
         assert res.code == 3, spelling
+
+
+def _suggest_replacement(cli, tmp_path, source, quote):
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "a.md").write_text(source + "\n", encoding="utf-8")
+    (tmp_path / "report.md").write_text(f'Docs say "{quote}" (src/a.md:1)\n', encoding="utf-8")
+    data = cli("suggest", str(tmp_path / "report.md"), "--root", str(tmp_path), "--json").json()
+    return data["items"][0]["suggestion"]["replace_quote"]
+
+
+def test_suggestion_keeps_final_period_upgrade(cli, tmp_path):
+    got = _suggest_replacement(cli, tmp_path, "Always back up the database before you upgrade.",
+                               "Always back up the database after you upgrade.")
+    assert got == "Always back up the database before you upgrade."
+
+
+def test_suggestion_keeps_final_period_logs(cli, tmp_path):
+    got = _suggest_replacement(cli, tmp_path, "Always run the migration first, then check the logs.",
+                               "Always run the migration first, then check logs.")
+    assert got == "Always run the migration first, then check the logs."
+
+
+def test_suggestion_does_not_add_period_missing_in_source(cli, tmp_path):
+    got = _suggest_replacement(cli, tmp_path, "Always back up the database before you upgrade",
+                               "Always back up the database after you upgrade.")
+    assert got == "Always back up the database before you upgrade"
